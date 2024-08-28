@@ -1,0 +1,60 @@
+{{template "base" .}}
+
+{{define "extraBase"}}
+<li><a href="" id="filterLink">Filter</a></li>
+{{end}}
+
+{{define "content"}}
+<!-- filer -->
+<div id="filterContainer" style="display: none;">
+    <form action="/filter" method="get" id="filterForm">
+        <div>
+            {{range .Categories}}
+            <input type="checkbox" id="{{.Name}}" name="categories" value="{{.Name}}">
+            <label for="{{.Name}}"> {{.Name}}</label>
+            {{end}}
+        </div>
+        {{ if .LoggedIn }}
+        <input type="checkbox" id="crposts" name="byUser" value="crposts">
+        <label for="crposts">Created posts</label>
+        <input type="checkbox" id="likeposts" name="byUser" value="likeposts">
+        <label for="likeposts">Liked posts</label>
+        {{ end }}
+        <br>
+        <button type="submit">Filter</button>
+        <button type="button" onclick="clearForm()">Clear</button>
+    </form>
+</div>
+
+<section class="posts-section">
+    {{range .Posts}}
+    <a href="/post?id={{.ID}}" class="post-link">
+    <article class="post-card">
+        <div id="post-{{.ID}}">
+            <h2>{{.Title}}</h2>
+            <div class="post-meta">
+                <p class="user">{{.Username}}</p>
+                <p class="date">{{.CreatedAt}}</p>
+                <br>
+            </div>
+            <div class="categories">
+            {{range .Categories}}
+                <span>{{.Name}} </span>
+            {{end}}
+            </div>
+            <p class="content">{{.Content}}</p>
+            <a href="/post?id={{.ID}}" class="button comment-button">Add comment</a>
+            <button onclick="handleLike('post', '{{.ID}}', 'like')" class="like-button">Like</button>
+            <span class="like-count">{{.Likes}}</span>
+            <button onclick="handleLike('post', '{{.ID}}', 'dislike')" class="dislike-button">Dislike</button>
+            <span class="dislike-count">{{.Dislikes}}</span>
+        </div>
+    </article>
+    </a>
+    {{end}}
+</section>
+{{end}}
+
+{{define "js"}}
+<script src="/js/index.js"></script>
+{{end}}

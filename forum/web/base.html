@@ -1,0 +1,44 @@
+{{ define "base"}}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/auth.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+    <div class="large-header" id="large-header"> <!-- Add this div with the class and ID -->
+        <h1 class="main-title"><span>Web</span> Forum</h1> <!-- Add a main title for the large header -->
+    </div>
+    <header>
+        <nav class="nav">
+            <ul>
+                <li><a href="/">Home</a></li>
+                {{ if .LoggedIn }}
+                <li class="right"><a href="#" id="logoutLink">Logout</a></li>
+                {{ else }}
+                <li class="right"><a href="/login">Login</a></li>
+                <li class="right"><a href="/signup">Sign Up</a></li>
+                {{ end }}
+                {{ if .LoggedIn }}
+                <li><a href="/postform">Create Post</a></li>
+                {{ end }}
+                <!-- Block where additional content can be added to the nav base -->
+                {{ block "extraBase" .}}{{end}}
+            </ul>
+        </nav>
+    </header>
+    <main class="container">
+        {{ block "content" .}}{{end}}
+    </main>
+    <script src="/js/base.js"></script>
+    {{ block "js" .}}{{end}}
+</body>
+
+</html>
+{{end}}
